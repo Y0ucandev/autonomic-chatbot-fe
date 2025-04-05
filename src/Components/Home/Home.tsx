@@ -13,7 +13,6 @@ const Home = () => {
                     <a href="#">ROZPOCZNIJ ROZMOWĘ</a>
                 </div>
                 <div className={Style.animation}>
-                    {/* <img src="../../../public/animationWomen.gif" alt="" /> */}
                 </div>
 
             </div>

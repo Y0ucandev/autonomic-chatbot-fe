@@ -39,7 +39,7 @@
 .btnChat {
     width: 250px;
     height: 250px;
-    background: url(../../../public/chatIcon.svg) no-repeat center;
+    background: url(../../assets/Images/chatIcon.svg) no-repeat center;
     background-size: cover;
     position: relative;
 
@@ -58,11 +58,10 @@
 .animation {
     grid-row: 1 / span 2;
     grid-column: 2;
-    background-image: url(../../../public/animationWomen.gif);
+    background-image: url(../../assets/Animation/animationWomen.gif);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     width: 700px;
     height: 700px;
-
 }
