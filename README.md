@@ -6,7 +6,6 @@
 
 ## English Description 🇬🇧
 An application supporting individuals experiencing mood deterioration. It enables conversation with a virtual therapist who provides support and analyzes current mood. The application offers helpful tips and methods for coping with crises. If necessary, it recommends and encourages contact with a qualified specialist. It generates a summary of the session and conclusions worth sharing during a visit to a specialist.
-
 The application can be accessed directly from the website or by logging in through a Telegram account.
 
 ## Features
@@ -45,13 +44,20 @@ The application can be accessed directly from the website or by logging in throu
 1. Clone the repository
     ```bash
     git clone https://github.com/Y0ucandev/autonomic-chatbot-fe.git
+2. Install dependencies
+    ```bash
+    npm install 
+3. Run the application in development mode
+    ```bash
+    npm run dev
 
+## Requirements
+- Node.js 16+
+- npm 7+
 
 ## Polski Opis 🇵🇱
 Aplikacja wspierająca osoby w sytuacji pogorszenia nastroju. Umożliwia rozmowę z wirtualnym terapeutą, udzielającym wsparcia i analizującym bieżący nastrój. Aplikacja dostarcza pomocne wskazówki oraz metody radzenia sobie w kryzysie. Jeśli to konieczne, rekomenduje i zachęca do kontaktu z wykwalifikowanym specjalistą. Generuje podsumowanie spotkania oraz wnioski, które warto przekazać podczas wizyty u specjalisty.
-
 Z aplikacji można korzystać bezpośrednio z poziomu strony lub zalogować się przez swoje konto "Telegram".
-
 
 ## Funkcjonalności
 - Strona główna przedstawiająca podstawowe możliwości aplikacji
@@ -89,3 +95,13 @@ Z aplikacji można korzystać bezpośrednio z poziomu strony lub zalogować się
 1. Sklonuj repozytorium
    ```bash
    git clone https://github.com/Y0ucandev/autonomic-chatbot-fe.git
+2. Zainstaluj zależności
+    ```bash
+    npm install 
+3. Uruchom aplikacje w trybie deweloperskim
+    ```bash 
+    npm run dev
+    
+## Wymagane
+- Node.js 16+
+- npm 7+

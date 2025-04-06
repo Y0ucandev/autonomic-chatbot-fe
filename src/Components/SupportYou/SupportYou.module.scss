@@ -3,12 +3,12 @@
     width: 100%;
     height: 100vh;
     padding: 10px;
-
-
 }
 
-.title {
+.wrapTitle {
     display: flex;
+    width: 100%;
+    margin: 10px 0;
 
     h2 {
         flex: 1;
@@ -18,11 +18,13 @@
     }
 }
 
-.imgChat {
-    display: block;
-    background: url('../../assets/Images/btnChat.svg') no-repeat center;
-    background-size: cover;
+.linkChat {
     width: 100px;
     height: 60px;
     margin: 0 10px;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
 }
