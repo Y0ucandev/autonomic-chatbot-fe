@@ -1,28 +1,24 @@
-
 import { Outlet, Route, Routes } from 'react-router-dom'
 import './App.css'
-import Header from './Components/Header/Header'
-import Home from './Components/Home/Home'
-
+import Header from './components/header/Header'
+import Home from './components/home/Home'
 const Layout = () => {
   return (
-    <div>
+    <>
       <Header />
-      <Outlet />
-    </div>
+      <main>
+        <Outlet />
+      </main>
+    </>
   )
 }
-
 function App() {
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
       </Route>
-    </Routes >
-
+    </Routes>
   )
 }
-
 export default App

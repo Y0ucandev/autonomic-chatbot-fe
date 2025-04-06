@@ -3,12 +3,12 @@
     width: 100%;
     height: 100vh;
     padding: 10px;
-
-
 }
 
-.title {
+.wrapTitle {
     display: flex;
+    width: 100%;
+    margin: 10px 0;
 
     h2 {
         flex: 1;
@@ -18,11 +18,52 @@
     }
 }
 
-.imgChat {
-    display: block;
-    background: url('../../assets/Images/btnChat.svg') no-repeat center;
-    background-size: cover;
+.supportItems {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 50px;
+    justify-items: center;
+    align-items: center;
+}
+
+.supportItem {
+    width: 320px;
+    height: 310px;
+    padding: 5px;
+    background-color: var(--color-surface);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.supportItemFirst {
+    position: relative;
+
+    img {
+        width: 105%;
+        height: 105%;
+    }
+
+    p {
+        width: 180px;
+        position: absolute;
+        top: 30px;
+        left: 60px;
+        text-align: center;
+        color: var(--color-text-primary);
+        font-size: var(--font-size-description-small);
+    }
+}
+
+.linkChat {
     width: 100px;
     height: 60px;
     margin: 0 10px;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
 }
