@@ -1,0 +1,35 @@
+.wrapNav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+    background-color: var(--color-nav);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 2fr 1fr;
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+
+    @media screen and (max-width: 720px) {
+        grid-template-columns: auto;
+    }
+}
+
+.navBtn {
+    width: fit-content;
+    color: var(--color-text-primary);
+
+    @media screen and (max-width: 720px) {
+        display: none;
+    }
+}
+
+.navLogIn {
+    grid-column: 5;
+
+    @media screen and (max-width: 720px) {
+        display: block;
+    }
+}
