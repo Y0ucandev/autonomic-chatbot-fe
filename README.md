@@ -50,6 +50,15 @@ The application can be accessed directly from the website or by logging in throu
 3. Run the application in development mode
     ```bash
     npm run dev
+
+## Requirements
+- Node.js 16+
+- npm 7+2. Install dependencies
+    ```bash
+    npm install 
+3. Run the application in development mode
+    ```bash
+    npm run dev
     
 ## Requirements 
 - Node.js 16+
@@ -95,6 +104,16 @@ Z aplikacji można korzystać bezpośrednio z poziomu strony lub zalogować się
 1. Sklonuj repozytorium
    ```bash
    git clone https://github.com/Y0ucandev/autonomic-chatbot-fe.git
+2. Zainstaluj zależności
+    ```bash
+    npm install 
+3. Uruchom aplikacje w trybie deweloperskim
+    ```bash 
+    npm run dev
+    
+## Wymagane
+- Node.js 16+
+- npm 7+
 2. zainstaluj zależności
     ```bash
     npm install 

@@ -1,6 +1,9 @@
 import Style from './SupportYou.module.scss'
 import linkChat from '../../assets/images/StartChat.svg'
+<<<<<<< HEAD
 import computerCloud from '../../assets/animation/ComputerCloud.gif'
+=======
+>>>>>>> develop
 const SupportYou = () => {
     return (
         <div className={Style.supportYou}>

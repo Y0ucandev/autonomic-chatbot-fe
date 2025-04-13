@@ -1,5 +1,4 @@
 import Style from './Header.module.scss'
-
 const Header = () => {
     return (
         <nav className={Style.wrapNav}>
@@ -10,5 +9,4 @@ const Header = () => {
         </nav>
     )
 }
-
 export default Header

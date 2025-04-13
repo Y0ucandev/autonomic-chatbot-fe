@@ -20,8 +20,6 @@ const Home = () => {
             </div>
             <SupportYou />
         </>
-
     )
 }
-
 export default Home
