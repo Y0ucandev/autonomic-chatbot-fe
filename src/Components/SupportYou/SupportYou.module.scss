@@ -1,7 +1,6 @@
 .supportYou {
     background-color: var(--color-background);
     width: 100%;
-    height: 100vh;
     padding: 10px;
 }
 
@@ -19,38 +18,92 @@
 }
 
 .supportItems {
-    width: 100%;
-    height: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(2, 1fr);
-    gap: 50px;
-    justify-items: center;
-    align-items: center;
+    grid-template-columns: repeat(1fr 1fr);
+    grid-template-rows: repeat(1fr 20px 1fr);
+    gap: 40px;
+    justify-content: space-around;
 }
 
+
 .supportItem {
-    width: 320px;
-    height: 310px;
-    padding: 5px;
+    position: relative;
     background-color: var(--color-surface);
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
+    width: 400px;
+    height: 400px;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .supportItemFirst {
-    position: relative;
-
-    img {
-        width: 105%;
-        height: 105%;
-    }
+    grid-area: 1 / 1 /2/ 2;
 
     p {
         width: 180px;
         position: absolute;
-        top: 30px;
-        left: 60px;
+        top: 35px;
+        left: 80px;
+        text-align: center;
+        color: var(--color-text-primary);
+        font-size: var(--font-size-description-small);
+    }
+}
+
+.supportItemSecond {
+    grid-area: 1 / 2 / 3 / 2;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+        margin-top: 20px;
+        width: 80%;
+        text-align: center;
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-description);
+    }
+
+    img {
+        transform: translateY(40px);
+    }
+}
+
+.supportItemThird {
+    grid-area: 2 / 1 / 4 / 2;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+        margin-top: 20px;
+        width: 80%;
+        text-align: center;
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-description);
+    }
+
+    img {
+        transform: translateY(40px);
+    }
+}
+
+.supportItemFourth {
+    grid-area: 3 / 2 / 4 / 3;
+
+    p {
+        width: 80%;
+        position: absolute;
+        top: 35px;
+        left: 40px;
         text-align: center;
         color: var(--color-text-primary);
         font-size: var(--font-size-description-small);
