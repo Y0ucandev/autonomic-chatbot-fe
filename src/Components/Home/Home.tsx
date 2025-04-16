@@ -1,7 +1,8 @@
-import SupportYou from '../supportYou/SupportYou'
 import Style from './Home.module.scss'
 import womanGIF from '../../assets/animation/AnimationWomen.gif'
 import chatLinkImage from '../../assets/images/ChatIconStart.svg'
+import SupportYou from '../supportYou/SupportYou'
+import BenefitsShowcase from '../benefitsShowcase/BenefitsShowcase'
 const Home = () => {
     return (
         <>
@@ -19,6 +20,7 @@ const Home = () => {
                 </div>
             </div>
             <SupportYou />
+            <BenefitsShowcase />
         </>
     )
 }

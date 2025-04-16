@@ -8,23 +8,33 @@
     grid-template-rows: 1fr 1fr;
     align-items: center;
     justify-items: center;
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
 }
 
 .wrapTitle {
     position: absolute;
     top: 100px;
     left: 50px;
-    width: fit-content;
+    width: 500px;
     text-align: center;
     color: var(--color-text-primary);
 
     h2 {
         font-size: var(--font-size-subtitle);
     }
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        position: unset;
+    }
 }
 
 .title {
-    width: 500px;
+    width: 100%;
     line-height: 1.2em;
     font-family: Cantata One, serif;
     font-size: var(--font-size-title);
@@ -61,11 +71,20 @@
         height: 100%;
         object-fit: cover;
     }
+
+    @media screen and (max-width: 768px) {
+        grid-row: 3;
+    }
 }
 
 .animation {
     grid-column: 2/ span 2;
     grid-row: 1/ span 2;
+
+    @media screen and (max-width: 768px) {
+        grid-column: 1;
+        grid-row: 2;
+    }
 
     img {
         width: 120%;

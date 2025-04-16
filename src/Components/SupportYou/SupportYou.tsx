@@ -1,19 +1,14 @@
 import Style from './SupportYou.module.scss'
-import linkChat from '../../assets/images/StartChat.svg'
+
 import computerCloud from '../../assets/animation/ComputerCloud.gif'
 import specialistSupport from '../../assets/animation/specialistSupport.gif'
 import chatReplies from '../../assets/animation/chatReplies.gif'
 import rememberConversations from '../../assets/animation//RememberConversations.gif'
-
+import CaptionedTitle from '../../utils/CaptionedTitle'
 const SupportYou = () => {
     return (
         <div className={Style.supportYou}>
-            <div className={Style.wrapTitle}>
-                <a href="#" className={Style.linkChat}>
-                    <img src={linkChat} alt="Ikona chat kierująca do rozpoczęcia czatu" />
-                </a>
-                <h2>JAK MOGĘ CI POMÓC</h2>
-            </div>
+            <CaptionedTitle title={'Jak mogę Ci pomóc'} />
             <div className={Style.supportItems}>
                 <div className={`${Style.supportItem} ${Style.supportItemFirst}`}>
                     <img src={computerCloud} alt="Animacja komputera z widocznym czatem" />

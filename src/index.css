@@ -10,6 +10,7 @@
 :root {
   font-family: Marcellus, Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  background-color: var(--color-background);
   /* Colors */
   --color-background: #333;
   --color-surface: #49b4bc;
@@ -33,6 +34,7 @@
     --color-nav: #ffffff4d;
     /* Colors tekst */
     --color-text-primary: #116972;
-    --color-text-secondary: #ffffff;
+    --color-text-secondary: #eee;
+    ;
   }
 }
