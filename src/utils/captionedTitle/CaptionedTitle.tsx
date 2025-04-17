@@ -1,5 +1,5 @@
 import Style from './CaptionedTitle.module.scss'
-import linkChat from '../assets/images/StartChat.svg'
+import linkChat from '../../assets/images/StartChat.svg'
 const CaptionedTitle = ({ title }: { title: string }) => {
     return (
         <div className={Style.wrapTitle}>

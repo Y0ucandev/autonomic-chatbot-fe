@@ -3,6 +3,7 @@ import React from "react";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
 function Carousel({ numberViews = 1, children }: { numberViews: number, children: React.ReactNode }) {
     const settings = {
         infinite: true,
@@ -23,11 +24,11 @@ function Carousel({ numberViews = 1, children }: { numberViews: number, children
         ]
     };
     return (
-        <div className="slider-container">
+        <div>
             <Slider {...settings} className={Style.wrapBtn}>
                 {children}
             </Slider>
         </div>
     );
 }
-export default Carousel
+export default Carousel;

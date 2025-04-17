@@ -1,6 +1,6 @@
 
 import Style from './BenefitsShowcase.module.scss'
-import CaptionedTitle from '../../utils/CaptionedTitle'
+import CaptionedTitle from '../../utils/captionedTitle/CaptionedTitle'
 import Carousel from '../../utils/slider/Slider'
 import allTime from '../../assets/images/allTime.svg'
 import anonymity from '../../assets/images/anonymity.svg'

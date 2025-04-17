@@ -3,6 +3,7 @@ import womanGIF from '../../assets/animation/AnimationWomen.gif'
 import chatLinkImage from '../../assets/images/ChatIconStart.svg'
 import SupportYou from '../supportYou/SupportYou'
 import BenefitsShowcase from '../benefitsShowcase/BenefitsShowcase'
+import DataSecurityPanel from '../dataSecurityPanel/DataSecurityPanel'
 const Home = () => {
     return (
         <>
@@ -21,6 +22,7 @@ const Home = () => {
             </div>
             <SupportYou />
             <BenefitsShowcase />
+            <DataSecurityPanel />
         </>
     )
 }

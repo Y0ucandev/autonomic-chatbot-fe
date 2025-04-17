@@ -4,7 +4,7 @@ import computerCloud from '../../assets/animation/ComputerCloud.gif'
 import specialistSupport from '../../assets/animation/specialistSupport.gif'
 import chatReplies from '../../assets/animation/chatReplies.gif'
 import rememberConversations from '../../assets/animation//RememberConversations.gif'
-import CaptionedTitle from '../../utils/CaptionedTitle'
+import CaptionedTitle from '../../utils/captionedTitle/CaptionedTitle'
 const SupportYou = () => {
     return (
         <div className={Style.supportYou}>
