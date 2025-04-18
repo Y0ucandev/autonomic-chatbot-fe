@@ -5,11 +5,6 @@ import safeDate from '../../assets/Animation/safeData.gif'
 import dataRecording from '../../assets/Animation/dataRecording.gif'
 import encryption from '../../assets/Animation/encryption.gif'
 import downloadSummary from '../../assets/Animation/downloadSummary.gif'
-
-
-
-
-
 const DataSecurityPanel = () => {
     return (
         <>
@@ -33,19 +28,8 @@ const DataSecurityPanel = () => {
                     <p className={`${Style.description}`}>Możesz pobrać podsumowanie naszych spotkań, by przedstawić je podczas wizyty u specjalisty.
                     </p>
                 </div>
-
             </div>
-
-
         </>
     )
 }
-
 export default DataSecurityPanel
-
-
-{/* <SimpleSlider>
-
-
-
-</SimpleSlider> */}
