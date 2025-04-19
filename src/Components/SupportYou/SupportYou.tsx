@@ -7,7 +7,7 @@ import rememberConversations from '../../assets/animation//RememberConversations
 import CaptionedTitle from '../../utils/captionedTitle/CaptionedTitle'
 const SupportYou = () => {
     return (
-        <div className={Style.supportYou}>
+        <div id='supportYou' className={Style.supportYou}>
             <CaptionedTitle title={'Jak mogę Ci pomóc'} />
             <div className={Style.supportItems}>
                 <div className={`${Style.supportItem} ${Style.supportItemFirst}`}>

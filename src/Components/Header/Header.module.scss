@@ -18,8 +18,10 @@
 }
 
 .navBtn {
+    background-color: transparent;
     width: fit-content;
     color: var(--color-text-primary);
+    cursor: pointer;
 
     @media screen and (max-width: 720px) {
         display: none;

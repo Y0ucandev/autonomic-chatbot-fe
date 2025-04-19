@@ -7,10 +7,9 @@ import encryption from '../../assets/Animation/encryption.gif'
 import downloadSummary from '../../assets/Animation/downloadSummary.gif'
 const DataSecurityPanel = () => {
     return (
-        <>
+        <div id='dataSecurityPanel'>
             <CaptionedTitle title={'Twoje dane są bezpieczne'} />
             <div className={Style.wrapSecurity}>
-
                 <div className={`${Style.items} ${Style.item1}`}>
                     <img src={safeDate} alt="Animacja kłódki na teczce z dokumentami " />
                     <p className={`${Style.description} `} >Chatbot przechowuje dane w sposób bezpieczny i anonimowy.</p>
@@ -29,7 +28,7 @@ const DataSecurityPanel = () => {
                     </p>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 export default DataSecurityPanel

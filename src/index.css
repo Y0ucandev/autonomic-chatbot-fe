@@ -15,7 +15,7 @@
   --color-background: #333;
   --color-surface: #49b4bc;
   --color-surface-secondary: #f6e02c;
-  --color-nav: #ffffff4d;
+  --color-nav: #777777;
   /* Font size */
   --font-size-title: 47px;
   --font-size-subtitle: 26px;
@@ -23,6 +23,8 @@
   --font-size-description-small: 16px;
   /* Colors tekst */
   --color-text-primary: #eee;
+  --color-text-secondary: #eee;
+  --color-text-bubble: #116972;
 }
 
 @media (prefers-color-scheme: light) {
@@ -31,7 +33,7 @@
     --color-background: #b8d9ce;
     --color-surface: #49b4bc;
     --color-surface-secondary: #f6e02c;
-    --color-nav: #ffffff4d;
+    --color-nav: #cfe5dd;
     /* Colors tekst */
     --color-text-primary: #116972;
     --color-text-secondary: #eee;

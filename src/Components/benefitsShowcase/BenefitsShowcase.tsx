@@ -7,10 +7,10 @@ import anonymity from '../../assets/images/anonymity.svg'
 import support from '../../assets/images/support.svg'
 const BenefitsShowcase = () => {
     return (
-        <>
+        <div id='benefitsShowcase'>
             <CaptionedTitle title={'Dlaczego Warto ?'} />
             <Carousel numberViews={1}>
-                <div>
+                <div >
                     <div className={Style.element}>
                         <p className={Style.title}>Dostępność 24/7</p>
                         <img className={Style.icon} src={allTime} alt="zapis 27 przez 7 otoczony strzałką" />
@@ -31,7 +31,7 @@ const BenefitsShowcase = () => {
                     </div>
                 </div>
             </Carousel>
-        </>
+        </div>
     )
 }
 export default BenefitsShowcase
