@@ -4,6 +4,7 @@ import chatLinkImage from '../../assets/images/ChatIconStart.svg'
 import SupportYou from '../supportYou/SupportYou'
 import BenefitsShowcase from '../benefitsShowcase/BenefitsShowcase'
 import DataSecurityPanel from '../dataSecurityPanel/DataSecurityPanel'
+import ChatPreviewDemo from '../chatPreviewDemo/ChatPreviewDemo'
 const Home = () => {
     return (
         <>
@@ -23,6 +24,7 @@ const Home = () => {
             <SupportYou />
             <BenefitsShowcase />
             <DataSecurityPanel />
+            <ChatPreviewDemo />
         </>
     )
 }

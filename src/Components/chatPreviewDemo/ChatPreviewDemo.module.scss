@@ -1,0 +1,47 @@
+.wrapDemo {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.chatScreen {
+    width: 100%;
+}
+
+.wrapLink {
+    position: absolute;
+    top: 52%;
+    left: 55%;
+    width: 200px;
+    padding: 10px 30px;
+    line-height: 3em;
+    background-color: var(--color-text-primary);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease 0s, box-shadow 0.7s ease 0s;
+    display: flex;
+    transform: rotate(1deg);
+
+    @media screen and (max-width: 720px) {
+        width: 15%;
+        padding: 2px 5px;
+    }
+}
+
+.linkChat {
+    width: 100%;
+}
+
+.arrowChat {
+    position: absolute;
+    bottom: -30%;
+    right: -30%;
+    width: 50%;
+}
+
+@media screen and (min-width: 720px) {
+    .wrapLink:hover {
+        transform: scale(1.1) rotate(1deg);
+        box-shadow: 0px 0px 35px #f6e02dcc;
+    }
+}
