@@ -1,0 +1,146 @@
+.wrapForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 5px #999;
+}
+
+.title {
+    color: var(--color-text-primary);
+    width: fit-content;
+    align-self: center;
+    padding: 20px;
+}
+
+.description {
+    color: var(--color-text-primary)
+}
+
+.wrapInput {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.contents {
+    font-size: var(--font-size-description);
+    color: var(--color-text-primary)
+}
+
+.contentsSmall {
+    font-size: var(--font-size-description-small);
+    color: var(--color-text-primary)
+}
+
+.formField {
+    font-size: var(--font-size-description-small);
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--color-text-secondary);
+}
+
+.errorMessage {
+    color: red;
+    font-size: 12px;
+}
+
+.subForm {
+    padding: 10px;
+    border-radius: 7px;
+    display: block;
+    margin: 0 5% 0 auto;
+    cursor: pointer;
+}
+
+.subForm:hover,
+.finish:hover {
+
+    box-shadow: 0px 0px 5px var(--color-text-bubble);
+}
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw;
+    height: 70vh;
+    background-color: var(--color-background);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 5px #999;
+
+    h3 {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-title);
+        line-height: 3em;
+    }
+
+    p {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-description);
+        line-height: 2em;
+    }
+}
+
+.finish {
+    padding: 10px;
+    border-radius: 7px;
+    display: block;
+    margin-top: 50px;
+    font-size: var(--font-size-description);
+    color: var(--color-text-primary);
+    cursor: pointer;
+}
+
+.wrapCheck {
+    display: flex;
+    align-items: center;
+    padding: 1px;
+}
+
+.check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin: 0 3px;
+    border-radius: 5px;
+    border: 2px #999 solid;
+    cursor: pointer;
+    appearance: none;
+
+}
+
+.checkField {
+    appearance: none;
+}
+
+.check:checked {
+    color: transparent;
+    background-color: #999;
+    background-image: url('../../../assets/images/icon-checkmark.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.checkField:checked+.check {
+    border: 2px #777 solid;
+    background-color: #999;
+    color: #fff;
+}
+
+.check:hover,
+.breathingRate:hover {
+    border: 2px blue solid;
+}
