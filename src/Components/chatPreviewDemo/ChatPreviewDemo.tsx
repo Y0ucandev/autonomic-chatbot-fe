@@ -6,10 +6,10 @@ const ChatPreviewDemo = () => {
     return (
         <div className={Style.wrapDemo}>
             <div className={Style.wrapLink}>
-                <img className={Style.linkChat} src={linkChat} alt="Link kierujacy do rozmowy" />
-                <img className={Style.arrowChat} src={arrowChat} alt="Gif zachęcający do wejścia" />
+                <img className={Style.linkChat} src={linkChat} alt="Ikona przedstawiająca chmurkę czatu z napisem 'Hat', symbolizująca rozmowę lub komunikację." />
+                <img className={Style.arrowChat} src={arrowChat} alt="Ikona strzałki, symbolizująca kliknięcie w link." />
             </div>
-            <img className={Style.chatScreen} src={chatScreen} alt="Pomieszczenie z laptopem na którym włączony jest czat" />
+            <img className={Style.chatScreen} src={chatScreen} alt="Tło strony przedstawiające laptopa na stole z włączoną aplikacją autonomicznego chatbota." />
         </div>
     )
 }

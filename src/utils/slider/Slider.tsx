@@ -3,7 +3,6 @@ import React from "react";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
 function Carousel({ numberViews = 1, children }: { numberViews: number, children: React.ReactNode }) {
     const settings = {
         infinite: true,

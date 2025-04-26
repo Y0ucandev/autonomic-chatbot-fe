@@ -15,10 +15,10 @@ const Home = () => {
                 </div>
                 <div className={Style.chatLink}>
                     <a href="#">ROZPOCZNIJ ROZMOWĘ</a>
-                    <img src={chatLinkImage} alt="Ikona chmurek czatu kierująca do rozmowy" />
+                    <img src={chatLinkImage} alt="Ikona przedstawiająca żółtą chmurkę czatu, symbolizująca rozmowę lub komunikację." />
                 </div>
                 <div className={Style.animation} >
-                    <img src={womanGIF} alt="Uśmiechnięta kobieta korzystająca z aplikacji na smartphonie" />
+                    <img src={womanGIF} alt="Animacja kobiety używającej aplikacji na telefonie, a następnie machającej do ciebie, symbolizująca interakcję i przywitanie." />
                 </div>
             </div>
             <SupportYou />
