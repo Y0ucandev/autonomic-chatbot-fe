@@ -4,7 +4,7 @@ import BtnSecret from '../../../utils/secretBtn/BtnSecret';
 import Style from './UserLogin.module.scss'
 import { useState } from 'react'
 import { Field, Formik, ErrorMessage } from 'formik';
-import { loginAPI } from '../../../services/LoginAPI';
+import { loginAPI } from '../../../services/loginAPI';
 import ErrorPopup from '../../../utils/errorPopup/ErrorPopup';
 import { useNavigate } from 'react-router-dom';
 import hiIcon from '../../../assets/Animation/ChatInlog.gif';

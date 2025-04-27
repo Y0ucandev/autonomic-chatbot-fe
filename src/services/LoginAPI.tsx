@@ -21,7 +21,7 @@ export const loginAPI = async (
         });
         if (response.status === 200) {
             navigate('/');
-        } else if (response.status === 422) {
+        } else if (response.status === 401) {
             setError('Brakujące lub niepoprawne dane rejestracyjne');
         } else {
             const errorData = await response.json();
