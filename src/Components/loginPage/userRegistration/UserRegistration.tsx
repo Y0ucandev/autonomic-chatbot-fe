@@ -36,6 +36,8 @@ const UserRegistration = () => {
         }
         if (!values.password) {
             errors.password = 'Pole jest wymagane';
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(values.password)) {
+            errors.password = "Hasło musi zawierać co najmniej 8 znaków, jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny";
         }
         else if (values.password != values.confirmPassword) {
             errors.confirmPassword = 'Hasła nie są takie same';
