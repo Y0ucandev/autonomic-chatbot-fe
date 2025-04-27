@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Style from './UserRegistration.module.scss'
 import { useState } from 'react'
 import { Field, Formik, ErrorMessage } from 'formik';
-type FormValues = {
+import BtnSecret from '../../../utils/secretBtn/BtnSecret'
+import { useSecretPassword } from '../../../hooks/useSecretPassword'
+import { handleRegistration } from '../../../services/handleRegistration';
+import ErrorPopup from '../../../utils/errorPopup/ErrorPopup';
+export type FormValues = {
     email: string;
     password: string;
     confirmPassword: string;
@@ -11,12 +15,12 @@ type FormValues = {
     age: number;
 };
 const UserRegistration = () => {
-    const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
-    const passwordReveal = 'password'
+    const { passwordReveal, togglePasswordReveal } = useSecretPassword();
+    const [showPopup, setShowPopup] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     return (
         <div>
-            <h1>Anywhere in your app!</h1>
             <Formik
                 initialValues={{ email: '', password: '', confirmPassword: '', gender: '', age: NaN }}
                 validate={(values: FormValues) => {
@@ -42,11 +46,8 @@ const UserRegistration = () => {
                     }
                     return errors;
                 }}
-                onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                    }, 400);
+                onSubmit={(values, formikBag) => {
+                    return handleRegistration(values, formikBag, setError, setShowPopup);
                 }}
             >
                 {({
@@ -62,15 +63,16 @@ const UserRegistration = () => {
                         <h1 className={Style.title}>Autonomic Chat Bot</h1>
                         <h2 className={Style.description}>Zarejestruj sie:</h2>
                         <div>
-                            <p className={Style.description}>Uzupełnij poniższe dane by kontynułować.</p>
+                            <p className={Style.description}>Uzupełnij poniższe dane by kontynuować.</p>
                             <div className={Style.wrapInput}>
                                 <label className={Style.contents}>Email</label>
                                 <ErrorMessage className={Style.errorMessage} name="email" component="span" />
-                                <Field className={Style.formField} type="email" name="email" />
+                                <Field className={Style.formField} type="email" name="email" placeholder='kowalski@hat.pl' />
                             </div>
                             <div className={Style.wrapInput}>
                                 <label className={Style.contents}>Podaj hasło:</label>
                                 <Field className={Style.formField} type={passwordReveal} name="password" />
+                                <BtnSecret passwordReveal={passwordReveal} togglePasswordReveal={togglePasswordReveal} />
                             </div>
                             <div className={Style.wrapInput}>
                                 <label className={Style.contents}>Powtórz hasło:</label>
@@ -117,21 +119,18 @@ const UserRegistration = () => {
                             <button className={Style.subForm} type="submit" disabled={isSubmitting || !isValid || !dirty}
                                 onClick={() => {
                                     if (values.email && values.password && values.confirmPassword && values.age && values) {
-                                        setShowPopup(true);
                                     }
                                 }
                                 }>
                                 Zarejestruj się
                             </button>
+                            {error && <ErrorPopup error={error} />}
                             {showPopup &&
                                 <div className={Style.popup}>
                                     <h3 className={Style.popupTitle}>Rejestracja zakończona sukcesem</h3>
-                                    <p>Możesz teraz przejść do korzystania z naszej aplikacji</p>
+                                    <p>Możesz teraz przejść do korzystania z aplikacji</p>
                                     <button className={Style.finish} type="button"
-                                        onClick={() => {
-                                            navigate('/');
-                                        }
-                                        }>
+                                        onClick={() => { navigate('/') }}>
                                         Kontynuuj
                                     </button>
                                 </div>}
@@ -139,7 +138,7 @@ const UserRegistration = () => {
                     </form>
                 )}
             </Formik>
-        </div>
+        </div >
     )
 }
 export default UserRegistration
