@@ -1,0 +1,19 @@
+.wrapBtn button:before {
+    color: transparent;
+}
+
+.wrapBtn:hover>button:before {
+    color: #ccc;
+    font-size: 35px;
+    text-shadow: 0 0 2px #ddd;
+}
+
+.wrapBtn :global(.slick-prev) {
+    left: 0;
+    z-index: 10;
+}
+
+.wrapBtn :global(.slick-next) {
+    right: 13px;
+    z-index: 10;
+}

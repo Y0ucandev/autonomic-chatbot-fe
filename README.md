@@ -53,6 +53,15 @@ The application can be accessed directly from the website or by logging in throu
 
 ## Requirements
 - Node.js 16+
+- npm 7+2. Install dependencies
+    ```bash
+    npm install 
+3. Run the application in development mode
+    ```bash
+    npm run dev
+    
+## Requirements 
+- Node.js 16+
 - npm 7+
 
 ## Polski Opis 🇵🇱
@@ -103,5 +112,15 @@ Z aplikacji można korzystać bezpośrednio z poziomu strony lub zalogować się
     npm run dev
     
 ## Wymagane
+- Node.js 16+
+- npm 7+
+2. zainstaluj zależności
+    ```bash
+    npm install 
+3. Uruchom aplikacje w trybie deweloperskim
+    ```bash
+    npm run dev
+
+## Wymagane 
 - Node.js 16+
 - npm 7+

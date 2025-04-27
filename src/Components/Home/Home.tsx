@@ -1,7 +1,10 @@
-import SupportYou from '../supportYou/SupportYou'
 import Style from './Home.module.scss'
 import womanGIF from '../../assets/animation/AnimationWomen.gif'
 import chatLinkImage from '../../assets/images/ChatIconStart.svg'
+import SupportYou from '../supportYou/SupportYou'
+import BenefitsShowcase from '../benefitsShowcase/BenefitsShowcase'
+import DataSecurityPanel from '../dataSecurityPanel/DataSecurityPanel'
+import ChatPreviewDemo from '../chatPreviewDemo/ChatPreviewDemo'
 const Home = () => {
     return (
         <>
@@ -12,13 +15,16 @@ const Home = () => {
                 </div>
                 <div className={Style.chatLink}>
                     <a href="#">ROZPOCZNIJ ROZMOWĘ</a>
-                    <img src={chatLinkImage} alt="Ikona chmurek czatu kierująca do rozmowy" />
+                    <img src={chatLinkImage} alt="Ikona przedstawiająca żółtą chmurkę czatu, symbolizująca rozmowę lub komunikację." />
                 </div>
                 <div className={Style.animation} >
-                    <img src={womanGIF} alt="Uśmiechnięta kobieta korzystająca z aplikacji na smartphonie" />
+                    <img src={womanGIF} alt="Animacja kobiety używającej aplikacji na telefonie, a następnie machającej do ciebie, symbolizująca interakcję i przywitanie." />
                 </div>
             </div>
             <SupportYou />
+            <BenefitsShowcase />
+            <DataSecurityPanel />
+            <ChatPreviewDemo />
         </>
     )
 }
