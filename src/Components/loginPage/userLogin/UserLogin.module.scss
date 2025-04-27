@@ -1,0 +1,94 @@
+.wrapForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0px 0px 5px #999;
+
+    @media (max-width: 720px) {
+        width: 95%;
+        height: fit-content;
+        min-width: 0;
+    }
+}
+
+.title {
+    font-size: var(--font-size-title);
+    color: var(--color-text-primary);
+    width: fit-content;
+    align-self: center;
+    padding: 20px;
+
+    @media (max-width: 720px) {
+        text-align: center;
+        font-size: var(--font-size-description);
+    }
+}
+
+.subtitle {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-description);
+}
+
+.wrapInput {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    position: relative;
+}
+
+.contents {
+    font-size: var(--font-size-description);
+    color: var(--color-text-primary)
+}
+
+.formField {
+    font-size: var(--font-size-description-small);
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--color-text-secondary);
+}
+
+.errorMessage {
+    color: red;
+    font-size: 12px;
+}
+
+.wrapBtn {
+    width: 90%;
+    display: flex;
+    justify-content: end;
+}
+
+.wrapHiIcon {
+    margin: 0 auto;
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    margin: 5px;
+}
+
+.subForm {
+    padding: 10px;
+    border-radius: 7px;
+    display: block;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.hiIcon {
+    grid-column: 3;
+    width: 100px;
+}

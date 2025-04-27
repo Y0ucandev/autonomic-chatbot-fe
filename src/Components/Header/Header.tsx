@@ -13,7 +13,7 @@ const Header = () => {
             <button className={Style.navBtn} onClick={() => { navigate('/'); goElement('supportYou') }}>JAK DZIAŁAM</button>
             <button className={Style.navBtn} onClick={() => { navigate('/'); goElement('benefitsShowcase') }}>KORZYŚCI</button>
             <button className={Style.navBtn} onClick={() => { navigate('/'); goElement('dataSecurityPanel') }}>BEZPIECZEŃSTWO</button>
-            <button className={`${Style.navBtn} ${Style.navLogIn}`} onClick={() => { navigate('/Rejestracja') }}>ZALOGUJ SIĘ</button>
+            <button className={`${Style.navBtn} ${Style.navLogIn}`} onClick={() => { navigate('/Logowanie') }}>ZALOGUJ SIĘ</button>
         </nav>
     )
 }

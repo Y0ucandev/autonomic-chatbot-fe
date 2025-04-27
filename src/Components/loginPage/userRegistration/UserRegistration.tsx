@@ -71,7 +71,6 @@ const UserRegistration = () => {
                 }}
             >
                 {({
-                    values,
                     errors,
                     touched,
                     handleSubmit,
@@ -144,14 +143,16 @@ const UserRegistration = () => {
                                     <ErrorMessage className={Style.errorMessage} name="gender" component="span" />
                                 </div>
                             </div>
-                            <button className={Style.subForm} type="submit" disabled={isSubmitting || !isValid || !dirty}
-                                onClick={() => {
-                                    if (values.email && values.password && values.confirmPassword && values.age && values) {
-                                    }
-                                }
-                                }>
-                                Zarejestruj się
-                            </button>
+                            <div className={Style.wrapBtn}>
+                                <button className={Style.subForm} type="button" onClick={() => {
+                                    navigate('/Logowanie')
+                                }}>
+                                    Zaloguj się
+                                </button>
+                                <button className={Style.subForm} type="submit" disabled={isSubmitting || !isValid || !dirty}>
+                                    Zarejestruj się
+                                </button>
+                            </div>
                             {error && <ErrorPopup error={error} />}
                             {showPopup &&
                                 <div className={Style.popup}>
