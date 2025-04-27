@@ -14,19 +14,23 @@ export const handleRegistration = async (
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                name: values.name,
                 email: values.email,
                 password: values.password,
                 gender: values.gender,
-                age: values.age,
+                age: parseInt(values.age.toString()),
             })
         });
-        if (!response.ok) {
+        if (response.status === 200) {
+            setShowPopup(true);
+        } else if (response.status === 400) {
+            setError('Konto z podanym adresem email już istnieje');
+        } else if (response.status === 422) {
+            setError('Brakujące lub niepoprawne dane rejestracyjne');
+        } else {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Błąd rejestracji');
         }
-        const result = await response.json();
-        console.log('Rejestracja udana:', result);
-        setShowPopup(true);
     } catch (error) {
         console.error('Błąd rejestracji:', error);
         if (error instanceof Error) {
@@ -34,7 +38,7 @@ export const handleRegistration = async (
         } else if (typeof error === 'string') {
             setError(error);
         } else {
-            setError('Wystąpił błąd');
+            setError('Wystąpił nieoczekiwany błąd');
         }
     } finally {
         setSubmitting(false);
