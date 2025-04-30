@@ -1,10 +1,16 @@
 
 import { FormValues } from "../components/loginPage/userLogin/UserLogin";
+interface LoginResponse {
+    access_token: string;
+    token_type: string;
+    status: string;
+}
 export const loginAPI = async (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
     setError: (error: string | null) => void,
-    navigate: (path: string) => void
+    navigate: (path: string) => void,
+    setUser: (user: any) => void
 ) => {
     try {
         setError(null);
@@ -20,8 +26,28 @@ export const loginAPI = async (
             })
         });
         if (response.status === 200) {
-            navigate('/');
-        } else if (response.status === 401) {
+            const data: LoginResponse = await response.json();
+            if (data.access_token) {
+                localStorage.setItem('accessToken', data.access_token);
+                try {
+                    const userResponse = await fetch('https://url:/users/me', {
+                        headers: {
+                            'Authorization': `Bearer ${data.access_token}`
+                        }
+                    });
+                    if (userResponse.ok) {
+                        const userData = await userResponse.json();
+                        setUser(userData);
+                    }
+                } catch (userError) {
+                    console.error('Błąd pobierania danych użytkownika:', userError);
+                }
+                navigate('/');//
+            } else {
+                throw new Error('Brak tokenu w odpowiedzi');
+            }
+        }
+        else if (response.status === 401) {
             setError('Brakujące lub niepoprawne dane rejestracyjne');
         } else {
             const errorData = await response.json();

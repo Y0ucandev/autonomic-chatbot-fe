@@ -8,14 +8,16 @@ import { loginAPI } from '../../../services/loginAPI';
 import ErrorPopup from '../../../utils/errorPopup/ErrorPopup';
 import { useNavigate } from 'react-router-dom';
 import hiIcon from '../../../assets/Animation/ChatInlog.gif';
+import useAuth from '../../../hooks/useAuth';
 export type FormValues = {
     email: string;
     password: string;
 };
 const UserLogin = () => {
     const navigate = useNavigate();
-    const { passwordReveal, togglePasswordReveal } = useSecretPassword();
     const [error, setError] = useState<string | null>(null);
+    const { setUser } = useAuth();
+    const { passwordReveal, togglePasswordReveal } = useSecretPassword();
     const validateForm = async (values: FormValues) => {
         const errors: { [key in keyof FormValues]?: string } = {};
 
@@ -50,7 +52,7 @@ const UserLogin = () => {
                 initialValues={{ email: '', password: '' }}
                 validate={validateForm}
                 onSubmit={(values, formikBag) => {
-                    return loginAPI(values, formikBag, setError, navigate);
+                    return loginAPI(values, formikBag, setError, navigate, setUser);
                 }}
             >
                 {({
