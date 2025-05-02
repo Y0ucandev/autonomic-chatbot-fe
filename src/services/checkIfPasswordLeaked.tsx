@@ -1,4 +1,3 @@
-// export async function checkIfPasswordLeaked(password)
 export const checkIfPasswordLeaked = async (password: string) => {
     const sha1 = await generateSHA1(password);
     const prefix = sha1.substring(0, 5);
@@ -28,7 +27,6 @@ export const checkIfPasswordLeaked = async (password: string) => {
         throw error;
     }
 }
-// Hash the password using SHA-1
 async function generateSHA1(message: string) {
     const msgBuffer = new TextEncoder().encode(message);
     const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);

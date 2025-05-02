@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const logout = () => {
         localStorage.removeItem('accessToken');
         setUser(null);
-        window.location.href = '/login';
+        window.location.href = '/Logowanie';
     };
     const value = {
         user,
