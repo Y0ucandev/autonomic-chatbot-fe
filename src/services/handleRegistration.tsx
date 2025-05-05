@@ -3,7 +3,7 @@ export const handleRegistration = async (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
     setError: (error: string | null) => void,
-    setShowPopup: (show: boolean) => void
+    setShowPopup: (show: boolean) => void,
 ) => {
     try {
         setError(null);
@@ -21,15 +21,19 @@ export const handleRegistration = async (
                 age: parseInt(values.age.toString()),
             })
         });
-        if (response.status === 200) {
-            setShowPopup(true);
-        } else if (response.status === 400) {
-            setError('Konto z podanym adresem email już istnieje');
-        } else if (response.status === 422) {
-            setError('Brakujące lub niepoprawne dane rejestracyjne');
-        } else {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Błąd rejestracji');
+        switch (response.status) {
+            case 200:
+                setShowPopup(true);
+                break;
+            case 400:
+                setError('Konto z podanym adresem email już istnieje');
+                break;
+            case 422:
+                setError('Brakujące lub niepoprawne dane rejestracyjne');
+                break;
+            default:
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Błąd rejestracji');
         }
     } catch (error) {
         console.error('Błąd rejestracji:', error);

@@ -84,10 +84,11 @@
     @media screen and (max-width: 768px) {
         grid-column: 1;
         grid-row: 2;
+        width: 100%;
 
         img {
-            width: 120%;
-            transform: translateX(-10px);
+            width: 100%;
+            transform: translateX(30px);
         }
     }
 }
