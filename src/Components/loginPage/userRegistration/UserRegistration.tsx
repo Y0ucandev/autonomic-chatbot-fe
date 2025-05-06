@@ -1,0 +1,149 @@
+
+import { useNavigate } from 'react-router-dom';
+import Style from './UserRegistration.module.scss'
+import { useState } from 'react'
+import { Field, Formik, ErrorMessage } from 'formik';
+import BtnSecret from '../../../utils/secretBtn/BtnSecret'
+import { useSecretPassword } from '../../../hooks/useSecretPassword'
+import { handleRegistration } from '../../../services/handleRegistration';
+import ErrorPopup from '../../../utils/errorPopup/ErrorPopup';
+import { required, email, password, passwordLeak, confirmPassword, ValidationSchema, AsyncValidator } from '../../../utils/validators/validators';
+import { createFormikValidate } from '../../../utils/validators/createFormikValidator'
+
+export type FormValues = {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    gender: string;
+    age: number;
+};
+
+const UserRegistration = () => {
+    const navigate = useNavigate();
+    const { passwordReveal, togglePasswordReveal } = useSecretPassword();
+    const [showPopup, setShowPopup] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const validationSchema: ValidationSchema<FormValues> = {
+        name: [required()],
+        email: [required(), email()],
+        password: [required(), password()],
+        confirmPassword: [required(), confirmPassword('password')],
+        gender: [required()],
+        age: [required()],
+    };
+    const asyncValidators: { [K in keyof FormValues]?: AsyncValidator<FormValues[K]>[] } = {
+        password: [passwordLeak()]
+    };
+    const validate = createFormikValidate(validationSchema, asyncValidators);
+
+    return (
+        <div>
+            <Formik
+                initialValues={{ name: '', email: '', password: '', confirmPassword: '', gender: '', age: NaN }}
+                validate={validate}
+                onSubmit={(values, formikBag) => {
+                    return handleRegistration(values, formikBag, setError, setShowPopup);
+                }}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleSubmit,
+                    isSubmitting,
+                    isValid,
+                    dirty
+                }) => (
+                    <form onSubmit={handleSubmit} className={Style.wrapForm}>
+                        <h1 className={Style.title}>Autonomic Chat Bot</h1>
+                        <h2 className={Style.subtitle}>Zarejestruj sie:</h2>
+                        <div>
+                            <p className={Style.description}>Uzupełnij poniższe dane by kontynuować.</p>
+                            <div className={Style.wrapInput}>
+                                <label className={Style.contents}>Imie</label>
+                                <ErrorMessage className={Style.errorMessage} name="name" component="span" />
+                                <Field className={Style.formField} type="text" name="name" />
+                            </div>
+                            <div className={Style.wrapInput}>
+                                <label className={Style.contents}>Email</label>
+                                <ErrorMessage className={Style.errorMessage} name="email" component="span" />
+                                <Field className={Style.formField} type="email" name="email" placeholder='kowalski@hat.pl' />
+                            </div>
+                            <div className={Style.wrapInput}>
+                                <label className={Style.contents}>Podaj hasło:</label>
+                                {errors.password && touched.password && errors.password && <ErrorMessage className={Style.errorMessage} name="password"
+                                    component="span" />}
+                                <Field className={Style.formField} type={passwordReveal} name="password" />
+                                <BtnSecret passwordReveal={passwordReveal} togglePasswordReveal={togglePasswordReveal} />
+                            </div>
+
+                            <div className={Style.wrapInput}>
+                                <label className={Style.contents}>Powtórz hasło:</label>
+                                {errors.confirmPassword && touched.confirmPassword && errors.confirmPassword && <ErrorMessage className={Style.errorMessage} name="confirmPassword"
+                                    component="span" />}
+                                <Field className={Style.formField} type={passwordReveal} name="confirmPassword" />
+                            </div>
+                            <div >
+                                <label className={Style.contents}>Podaj wiek: </label>
+                                <Field className={Style.formField} type="number" min='1' max='99' name="age" />
+                                <ErrorMessage className={Style.errorMessage} name="age" component="span" />
+                            </div>
+                            <div className={Style.wrapInput}>
+                                <label className={Style.contents}>Wybierz pleć:</label>
+                                <div className={Style.wrapCheck}>
+                                    <Field
+                                        id='male'
+                                        name="gender"
+                                        type="radio"
+                                        value="male"
+                                        className={`${Style.check}`}
+                                    />
+                                    <label htmlFor='male' className={Style.contentsSmall}>Mężczyzna
+                                    </label>
+                                    <Field
+                                        id='female'
+                                        className={`${Style.check}`}
+                                        name="gender"
+                                        type="radio"
+                                        value="female"
+                                    />
+                                    <label htmlFor='female' className={`${Style.contentsSmall} `}>Kobieta</label>
+                                    <Field
+                                        id='other'
+                                        className={`${Style.check}`}
+                                        name="gender"
+                                        type="radio"
+                                        value="other"
+                                    />
+                                    <label htmlFor='other' className={Style.contentsSmall}>Inna</label>
+                                    <ErrorMessage className={Style.errorMessage} name="gender" component="span" />
+                                </div>
+                            </div>
+                            <button className={Style.subForm} type="submit" disabled={isSubmitting || !isValid || !dirty}
+                                onClick={() => {
+                                    if (values.email && values.password && values.confirmPassword && values.age && values) {
+                                    }
+                                }
+                                }>
+                                Zarejestruj się
+                            </button>
+                            {error && <ErrorPopup error={error} />}
+                            {showPopup &&
+                                <div className={Style.popup}>
+                                    <h3 className={Style.popupTitle}>Rejestracja zakończona sukcesem</h3>
+                                    <p>Możesz teraz przejść do korzystania z aplikacji</p>
+                                    <button className={Style.finish} type="button"
+                                        onClick={() => { navigate('/') }}>
+                                        Kontynuuj
+                                    </button>
+                                </div>}
+                        </div>
+                    </form>
+                )}
+            </Formik>
+        </div >
+    )
+}
+export default UserRegistration
