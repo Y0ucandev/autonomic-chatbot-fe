@@ -2,8 +2,10 @@
 import { useNavigate } from 'react-router-dom';
 import Style from './ErrorPopup.module.scss'
 import iconError from '../../assets/images/error.svg'
+
 const ErrorPopup = ({ error }: { error: string }) => {
     const navigate = useNavigate();
+
     return (
         <div className={Style.wrapPopup}>
             <h3 className={Style.title}>Podczas rejestracji wystąpił problem.</h3>
@@ -14,7 +16,7 @@ const ErrorPopup = ({ error }: { error: string }) => {
                     navigate('/');
                 }}
             >
-                Wróć na strony główną
+                Wróć na stronę główną
             </button>
         </div>
     )
