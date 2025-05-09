@@ -1,4 +1,6 @@
 import { FormValues } from "../components/loginPage/userRegistration/UserRegistration";
+import { api } from "../config/api";
+
 export const handleRegistration = async (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
@@ -8,7 +10,8 @@ export const handleRegistration = async (
     try {
         setError(null);
         setSubmitting(true);
-        const response = await fetch('https://url:/users/register', {
+
+        const response = await fetch(`${api.apiInterceptor}/users/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,6 +24,7 @@ export const handleRegistration = async (
                 age: parseInt(values.age.toString()),
             })
         });
+
         switch (response.status) {
             case 200:
                 setShowPopup(true);
@@ -35,14 +39,15 @@ export const handleRegistration = async (
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Błąd rejestracji');
         }
+
     } catch (error) {
-        console.error('Błąd rejestracji:', error);
+        console.error('Registration error:', error);
         if (error instanceof Error) {
             setError(error.message);
         } else if (typeof error === 'string') {
             setError(error);
         } else {
-            setError('Wystąpił nieoczekiwany błąd');
+            setError('An unexpected error occurred');
         }
     } finally {
         setSubmitting(false);

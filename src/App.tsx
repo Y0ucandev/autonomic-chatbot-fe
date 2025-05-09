@@ -5,6 +5,7 @@ import Home from './components/home/Home'
 import UserRegistration from './components/loginPage/userRegistration/UserRegistration'
 import UserLogin from './components/loginPage/userLogin/UserLogin'
 import ProtectedRoute from './services/ProtectedRoute'
+
 const Layout = () => {
   return (
     <>
@@ -15,6 +16,7 @@ const Layout = () => {
     </>
   )
 }
+
 function App() {
   return (
     <Routes>

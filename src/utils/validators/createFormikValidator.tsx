@@ -34,7 +34,7 @@ export function createFormikValidate<T extends Record<string, any>>(
                                 break;
                             }
                         } catch (error) {
-                            errors[fieldName] = "Błąd podczas walidacji";
+                            errors[fieldName] = "Error during validation";
                             break;
                         }
                     }

@@ -33,9 +33,11 @@ const UserRegistration = () => {
         gender: [required()],
         age: [required()],
     };
+
     const asyncValidators: { [K in keyof FormValues]?: AsyncValidator<FormValues[K]>[] } = {
         password: [passwordLeak()]
     };
+    
     const validate = createFormikValidate(validationSchema, asyncValidators);
 
     return (

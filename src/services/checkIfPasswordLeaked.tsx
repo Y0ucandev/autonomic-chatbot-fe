@@ -1,4 +1,4 @@
-import api from '../config/api';
+import { api } from '../config/api';
 
 export const checkIfPasswordLeaked = async (password: string) => {
     const sha1 = await generateSHA1(password);
@@ -27,7 +27,7 @@ export const checkIfPasswordLeaked = async (password: string) => {
             count: 0
         };
     } catch (error) {
-        console.error('Błąd podczas sprawdzania hasła:', error);
+        console.error('Error while checking password:', error);
         throw error;
     }
 }

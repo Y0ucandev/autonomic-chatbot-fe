@@ -2,6 +2,7 @@ import Style from './ChatPreviewDemo.module.scss'
 import chatScreen from '../../assets/images/chatScreen.svg'
 import linkChat from '../../assets/images/StartChat.svg'
 import arrowChat from '../../assets/Animation/arrow.gif'
+
 const ChatPreviewDemo = () => {
     return (
         <div className={Style.wrapDemo}>

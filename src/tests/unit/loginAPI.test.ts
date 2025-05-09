@@ -1,192 +1,228 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { loginAPI } from '../../services/loginAPI';
-import { FormValues } from '../../components/loginPage/userLogin/UserLogin'
-const createFetchResponse = (data: any, status = 200) => {
+import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest';
+import { loginAPI } from '../../services/LoginAPI';
+import { api } from '../../config/api';
+
+globalThis.fetch = vi.fn();
+
+const localStorageMock = (() => {
+    let store: Record<string, string> = {};
     return {
-        status,
-        ok: status >= 200 && status < 300,
-        json: () => Promise.resolve(data)
+        getItem: vi.fn((key: string) => store[key] || null),
+        setItem: vi.fn((key: string, value: string) => {
+            store[key] = value;
+        }),
+        clear: vi.fn(() => {
+            store = {};
+        }),
+        removeItem: vi.fn((key: string) => {
+            delete store[key];
+        })
     };
-};
+})();
+
+Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock
+});
+
 describe('loginAPI', () => {
+    const mockValues = {
+        email: 'test@example.com',
+        password: 'password123',
+    };
+
     const mockSetSubmitting = vi.fn();
     const mockSetError = vi.fn();
     const mockNavigate = vi.fn();
     const mockSetUser = vi.fn();
-    const testValues: FormValues = {
-        email: 'test@example.com',
-        password: 'password123'
+
+    const mockSuccessResponse = {
+        access_token: 'test-token-123',
+        token_type: 'bearer',
+        status: 'success'
     };
-    let localStorageMock: Record<string, string> = {};
+
+    const mockUserData = {
+        id: 1,
+        email: 'test@example.com',
+        name: 'Test User'
+    };
+
     beforeEach(() => {
-        vi.resetAllMocks();
-        localStorageMock = {};
-        globalThis.localStorage = {
-            getItem: vi.fn((key) => localStorageMock[key] || null),
-            setItem: vi.fn((key, value) => {
-                localStorageMock[key] = value;
-            }),
-            removeItem: vi.fn((key) => {
-                delete localStorageMock[key];
-            }),
-            clear: vi.fn(() => {
-                localStorageMock = {};
-            }),
-            length: 0,
-            key: vi.fn((index) => ''),
-        };
-        globalThis.console.error = vi.fn();
-        globalThis.fetch = vi.fn();
+        vi.clearAllMocks();
+        localStorageMock.clear();
     });
+
     afterEach(() => {
         vi.restoreAllMocks();
     });
-    it('powinien pomyślnie zalogować użytkownika i pobrać jego dane', async () => {
-        const mockLoginResponse = {
-            access_token: 'test_token_123',
-            token_type: 'Bearer',
-            status: 'success'
-        };
-        const mockUserData = {
-            id: 1,
-            email: 'test@example.com',
-            name: 'Test User'
-        };
-        vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
-            Promise.resolve(createFetchResponse(mockLoginResponse, 200)) as Promise<Response>
-        ).mockImplementationOnce(() =>
-            Promise.resolve(createFetchResponse(mockUserData, 200)) as Promise<Response>
-        );
+
+    it('should successfully log the user in and retrieve their data', async () => {
+        const mockLoginResponse = new Response(JSON.stringify(mockSuccessResponse), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const mockUserResponse = new Response(JSON.stringify(mockUserData), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        vi.mocked(fetch).mockResolvedValueOnce(mockLoginResponse)
+            .mockResolvedValueOnce(mockUserResponse);
+
         await loginAPI(
-            testValues,
+            mockValues,
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
             mockSetUser
         );
-        expect(fetch).toHaveBeenNthCalledWith(1, 'https://url:/users/login', {
+
+        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenNthCalledWith(1, `${api.apiInterceptor}/users/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: testValues.email,
-                password: testValues.password,
+                email: mockValues.email,
+                password: mockValues.password,
             })
         });
-        expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', 'test_token_123');
-        expect(fetch).toHaveBeenNthCalledWith(2, 'https://url:/users/me', {
+        expect(fetch).toHaveBeenNthCalledWith(2, `${api.apiInterceptor}/users/me`, {
             headers: {
-                'Authorization': 'Bearer test_token_123'
+                'Authorization': `Bearer ${mockSuccessResponse.access_token}`
             }
         });
+
+        expect(localStorageMock.setItem).toHaveBeenCalledWith('accessToken', mockSuccessResponse.access_token);
         expect(mockSetUser).toHaveBeenCalledWith(mockUserData);
-        expect(mockNavigate).toHaveBeenCalledWith('/');
+        expect(mockNavigate).toHaveBeenCalledWith('/Uzytkownik');
         expect(mockSetSubmitting).toHaveBeenCalledWith(true);
-        expect(mockSetSubmitting).toHaveBeenCalledWith(false);
+        expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
         expect(mockSetError).toHaveBeenCalledWith(null);
+        expect(mockSetError).toHaveBeenCalledTimes(1);
     });
 
-    it('powinien obsłużyć błąd autoryzacji (401)', async () => {
-        vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
-            Promise.resolve(createFetchResponse({}, 401)) as Promise<Response>
-        );
+    it('should handle authorization error (status 401)', async () => {
+        const mockErrorResponse = new Response(JSON.stringify({ message: 'Unauthorized' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        vi.mocked(fetch).mockResolvedValueOnce(mockErrorResponse);
+
         await loginAPI(
-            testValues,
+            mockValues,
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
             mockSetUser
         );
-        expect(mockSetSubmitting).toHaveBeenCalledWith(true);
-        expect(mockSetSubmitting).toHaveBeenCalledWith(false);
-        expect(mockSetError).toHaveBeenCalledWith('Brakujące lub niepoprawne dane rejestracyjne');
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(mockSetError).toHaveBeenCalledWith('Registration error, missing or incorrect registration data');
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(localStorageMock.setItem).not.toHaveBeenCalled();
+        expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
     });
 
-    it('powinien obsłużyć brak tokenu w odpowiedzi', async () => {
-        const mockResponseWithoutToken = {
-            // Brak access_token
-            token_type: 'Bearer',
-            status: 'success'
-        };
-        vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
-            Promise.resolve(createFetchResponse(mockResponseWithoutToken, 200)) as Promise<Response>
-        );
+    it('should handle another server error', async () => {
+        const mockErrorResponse = new Response(JSON.stringify({ message: 'Server error' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        vi.mocked(fetch).mockResolvedValueOnce(mockErrorResponse);
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+
         await loginAPI(
-            testValues,
+            mockValues,
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
             mockSetUser
         );
-        expect(mockSetSubmitting).toHaveBeenCalledWith(true);
-        expect(mockSetSubmitting).toHaveBeenCalledWith(false);
-        expect(mockSetError).toHaveBeenCalledWith('Brak tokenu w odpowiedzi');
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(mockSetError).toHaveBeenCalledWith('Server error');
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(localStorageMock.setItem).not.toHaveBeenCalled();
+        expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
+        expect(consoleSpy).toHaveBeenCalled();
+        consoleSpy.mockRestore();
     });
 
-    it('powinien obsłużyć inny błąd HTTP', async () => {
-        const mockErrorResponse = {
-            message: 'Błąd serwera'
-        };
+    it('should handle response without token', async () => {
+        const mockNoTokenResponse = new Response(JSON.stringify({ status: 'success' }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
 
-        vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
-            Promise.resolve(createFetchResponse(mockErrorResponse, 500)) as Promise<Response>
-        );
+        vi.mocked(fetch).mockResolvedValueOnce(mockNoTokenResponse);
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+
         await loginAPI(
-            testValues,
+            mockValues,
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
             mockSetUser
         );
-        expect(mockSetSubmitting).toHaveBeenCalledWith(true);
-        expect(mockSetSubmitting).toHaveBeenCalledWith(false);
-        expect(mockSetError).toHaveBeenCalledWith('Błąd serwera');
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(mockSetError).toHaveBeenCalledWith('No token in response');
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(localStorageMock.setItem).not.toHaveBeenCalled();
+        expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
+        expect(consoleSpy).toHaveBeenCalled();
+        consoleSpy.mockRestore();
     });
 
-    it('powinien obsłużyć wyjątek podczas wywołania fetch', async () => {
-        vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
-            Promise.reject(new Error('Błąd sieci'))
-        );
+    it('should handle error while fetching user data', async () => {
+        const mockLoginResponse = new Response(JSON.stringify(mockSuccessResponse), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
+        vi.mocked(fetch).mockResolvedValueOnce(mockLoginResponse)
+            .mockRejectedValueOnce(new Error('User fetch error'));
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+
         await loginAPI(
-            testValues,
+            mockValues,
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
             mockSetUser
         );
-        expect(mockSetSubmitting).toHaveBeenCalledWith(true);
-        expect(mockSetSubmitting).toHaveBeenCalledWith(false);
-        expect(mockSetError).toHaveBeenCalledWith('Błąd sieci');
-        expect(console.error).toHaveBeenCalled();
+
+        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(localStorageMock.setItem).toHaveBeenCalledWith('accessToken', mockSuccessResponse.access_token);
+        expect(mockNavigate).toHaveBeenCalledWith('/Uzytkownik');
+        expect(mockSetUser).not.toHaveBeenCalled();
+        expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
+        expect(consoleSpy).toHaveBeenCalledWith('Error getting user data:', expect.any(Error));
+        consoleSpy.mockRestore();
+    });
+
+    it('should handle rejection of fetch query', async () => {
+        vi.mocked(fetch).mockRejectedValueOnce(new Error('Network error'));
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+
+        await loginAPI(
+            mockValues,
+            { setSubmitting: mockSetSubmitting },
+            mockSetError,
+            mockNavigate,
+            mockSetUser
+        );
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(mockSetError).toHaveBeenCalledWith('Network error');
         expect(mockNavigate).not.toHaveBeenCalled();
-    });
-
-    it('powinien obsłużyć błąd podczas pobierania danych użytkownika', async () => {
-        const mockLoginResponse = {
-            access_token: 'test_token_123',
-            token_type: 'Bearer',
-            status: 'success'
-        };
-        vi.mocked(globalThis.fetch).mockImplementationOnce(() =>
-            Promise.resolve(createFetchResponse(mockLoginResponse, 200)) as Promise<Response>
-        ).mockImplementationOnce(() =>
-            Promise.reject(new Error('Błąd pobierania danych'))
-        );
-        await loginAPI(
-            testValues,
-            { setSubmitting: mockSetSubmitting },
-            mockSetError,
-            mockNavigate,
-            mockSetUser
-        );
-        expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', 'test_token_123');
-        expect(console.error).toHaveBeenCalled();
-        expect(mockNavigate).toHaveBeenCalledWith('/');
-        expect(mockSetSubmitting).toHaveBeenCalledWith(true);
-        expect(mockSetSubmitting).toHaveBeenCalledWith(false);
+        expect(localStorageMock.setItem).not.toHaveBeenCalled();
+        expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
+        expect(consoleSpy).toHaveBeenCalled();
+        consoleSpy.mockRestore();
     });
 });

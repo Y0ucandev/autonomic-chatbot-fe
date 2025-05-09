@@ -1,56 +1,41 @@
 import { useSecretPassword } from '../../../hooks/useSecretPassword';
-import { checkIfPasswordLeaked } from '../../../services/checkIfPasswordLeaked';
 import BtnSecret from '../../../utils/secretBtn/BtnSecret';
 import Style from './UserLogin.module.scss'
 import { useState } from 'react'
 import { Field, Formik, ErrorMessage } from 'formik';
-import { loginAPI } from '../../../services/loginAPI';
+import { loginAPI } from "../../../services/LoginAPI";
 import ErrorPopup from '../../../utils/errorPopup/ErrorPopup';
 import { useNavigate } from 'react-router-dom';
 import hiIcon from '../../../assets/Animation/ChatInlog.gif';
 import useAuth from '../../../hooks/useAuth';
+import { AsyncValidator, email, password, passwordLeak, required, ValidationSchema } from '../../../utils/validators/validators';
+import { createFormikValidate } from '../../../utils/validators/createFormikValidator'
+
 export type FormValues = {
     email: string;
     password: string;
 };
+
 const UserLogin = () => {
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
     const { setUser } = useAuth();
     const { passwordReveal, togglePasswordReveal } = useSecretPassword();
-    const validateForm = async (values: FormValues) => {
-        const errors: { [key in keyof FormValues]?: string } = {};
 
-        if (!values.email) {
-            errors.email = 'Pole jest wymagane';
-        } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-            errors.email = 'Niepoprawny adres email';
-        }
-        if (!values.password) {
-            errors.password = 'Pole jest wymagane';
-        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(values.password)) {
-            errors.password = "Hasło musi zawierać co najmniej 8 znaków, jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny";
-        }
-        if (values.password && !errors.password) {
-            try {
-                const result = await checkIfPasswordLeaked(values.password);
-                if (result.leaked) {
-                    errors.password = `To hasło wyciekło ${result.count} razy. Wybierz inne hasło.`;
-                }
-            } catch (error) {
-                console.error("Błąd podczas sprawdzania wycieku hasła:", error);
-                errors.password = "Nie udało się sprawdzić bezpieczeństwa hasła";
-            }
-        }
-        return errors;
-    }
+    const validationSchema: ValidationSchema<FormValues> = {
+        email: [required(), email()],
+        password: [required(), password()],
+    };
+    const asyncValidators: { [K in keyof FormValues]?: AsyncValidator<FormValues[K]>[] } = {
+        password: [passwordLeak()]
+    };
+    const validate = createFormikValidate(validationSchema, asyncValidators);
+
     return (
         <div>
             <Formik
                 initialValues={{ email: '', password: '' }}
-                validate={validateForm}
+                validate={validate}
                 onSubmit={(values, formikBag) => {
                     return loginAPI(values, formikBag, setError, navigate, setUser);
                 }}

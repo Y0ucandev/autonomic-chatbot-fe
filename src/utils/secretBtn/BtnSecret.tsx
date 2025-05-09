@@ -1,7 +1,7 @@
-
 import Style from './BtnSecret.module.scss'
 import iconON from '../../assets/images/hide.svg'
 import iconOff from '../../assets/images/reveal.svg'
+
 const BtnSecret = ({ passwordReveal, togglePasswordReveal }: { passwordReveal: 'password' | 'text', togglePasswordReveal: () => void }) => {
     return (
         <button type="button" onClick={togglePasswordReveal}>
