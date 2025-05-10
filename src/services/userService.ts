@@ -1,4 +1,3 @@
-
 import { User } from '../context/AuthContext';
 import apiInterceptor from './apiInterceptor';
 

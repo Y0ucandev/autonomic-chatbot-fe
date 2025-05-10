@@ -21,11 +21,6 @@ export const tokenExpiryTime = (token: string): number => {
     return timeToExpiry > 0 ? timeToExpiry : -1;
 };
 
-export const tokenExpireSoon = (token: string, timeFrame: number = 60000): boolean => {
-    const timeToExpiry = tokenExpiryTime(token);
-    return timeToExpiry > 0 && timeToExpiry < timeFrame;
-};
-
 export const tokenExpired = (token: string): boolean => {
     return tokenExpiryTime(token) <= 0;
 };
