@@ -22,6 +22,7 @@ function Carousel({ numberViews = 1, children }: { numberViews: number, children
             },
         ]
     };
+
     return (
         <div>
             <Slider {...settings} className={Style.wrapBtn}>

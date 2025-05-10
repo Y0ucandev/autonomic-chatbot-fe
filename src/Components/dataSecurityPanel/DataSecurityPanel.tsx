@@ -5,6 +5,7 @@ import safeDate from '../../assets/Animation/safeData.gif'
 import dataRecording from '../../assets/Animation/dataRecording.gif'
 import encryption from '../../assets/Animation/encryption.gif'
 import downloadSummary from '../../assets/Animation/downloadSummary.gif'
+
 const DataSecurityPanel = () => {
     return (
         <div id='dataSecurityPanel'>

@@ -30,7 +30,7 @@ export function useFormValidation<T extends Record<string, any>>(
                         return error;
                     }
                 } catch (error) {
-                    const errorMessage = "Błąd podczas walidacji";
+                    const errorMessage = "Error during validation";
                     setErrors(prev => ({ ...prev, [name]: errorMessage }));
                     return errorMessage;
                 }

@@ -69,11 +69,16 @@
     font-size: 12px;
 }
 
+.wrapBtn {
+    display: flex;
+    justify-content: end;
+}
+
 .subForm {
     padding: 10px;
     border-radius: 7px;
     display: block;
-    margin: 0 5% 0 auto;
+    margin: 5px;
     cursor: pointer;
 }
 
