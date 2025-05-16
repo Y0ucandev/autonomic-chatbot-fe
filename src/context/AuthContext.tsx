@@ -1,9 +1,8 @@
 import { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { tokenExpired } from '../utils/tokenUtils';
-import { refreshToken } from '../services/authService';
 import { setupInterceptors } from '../services/apiInterceptor';
-import { getUserProfile } from '../services/userService';
+import { logout as logoutFromServer, refreshToken } from '../services/authService';
 
 export type User = {
     name: string;
@@ -29,7 +28,7 @@ const defaultAuthContext: AuthContextType = {
     loading: true,
     logout: () => { },
     authenticated: false,
-    refreshUserToken: () => Promise.resolve(false)
+    refreshUserToken: () => Promise.resolve(false),
 };
 
 const AuthContext = createContext<AuthContextType>(defaultAuthContext);
@@ -40,12 +39,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [token, setToken] = useState<string | null>(null);
 
-    const logout = useCallback(() => {
-        localStorage.removeItem('accessToken');
-        setupInterceptors(null);
-        setToken(null);
-        setUser(null);
-        navigate('/Logowanie');
+    const logout = useCallback(async () => {
+        try {
+            await logoutFromServer();
+        } catch (error) {
+            console.error('Server logout error:', error);
+        }
+        finally {
+            localStorage.removeItem('accessToken');
+            setupInterceptors(null);
+            setToken(null);
+            setUser(null);
+            navigate('/Logowanie');
+        }
     }, [navigate]);
 
     const updateToken = useCallback((newToken: string | null) => {
@@ -87,12 +93,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 } else {
                     setToken(storedToken);
                     setupInterceptors(storedToken);
-                    try {
-                        const response = await getUserProfile();
-                        setUser(response.data);
-                    } catch (error) {
-                        logout();
-                    }
+                    // try {
+                    //     const response = await getUserProfile();
+                    //     setUser(response.data);
+                    // } catch (error) {
+                    //     logout();
+                    // }
                 }
             }
             setLoading(false);
@@ -106,8 +112,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser,
         loading,
         logout,
-        authenticated: !!user && !!token,
-        refreshUserToken
+        authenticated: !!token,
+        // authenticated: !!user && !!token,
+        refreshUserToken,
     };
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

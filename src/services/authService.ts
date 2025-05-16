@@ -36,7 +36,7 @@ export const logout = async () => {
         await apiInterceptor.post('/users/logout');
         return true;
     } catch (error) {
-        console.error('Błąd wylogowywania:', error);
+        console.error('The server responded with an error:', error);
         return false;
     }
 };

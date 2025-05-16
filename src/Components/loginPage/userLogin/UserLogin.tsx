@@ -34,10 +34,11 @@ const UserLogin = () => {
     return (
         <div>
             <Formik
-                initialValues={{ email: '', password: '' }}
+                initialValues={{ email: 'jann@wp.pl', password: 'Amnonte!1' }}
+                // initialValues={{ email: '', password: '' }}
                 validate={validate}
                 onSubmit={(values, formikBag) => {
-                    return loginAPI(values, formikBag, setError, navigate, setUser);
+                    return loginAPI(values, formikBag, setError, navigate, setUser,);
                 }}
             >
                 {({

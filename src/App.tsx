@@ -5,6 +5,7 @@ import Home from './components/home/Home'
 import UserRegistration from './components/loginPage/userRegistration/UserRegistration'
 import UserLogin from './components/loginPage/userLogin/UserLogin'
 import ProtectedRoute from './services/ProtectedRoute'
+import UserPanel from './components/userPanel/userPanel'
 
 const Layout = () => {
   return (
@@ -25,8 +26,8 @@ function App() {
         <Route path='Logowanie' element={<UserLogin />} />
         <Route path='Rejestracja' element={<UserRegistration />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='Uzytkownik' element={<h1>Uzytkownik
-          </h1>} />
+          <Route path='Uzytkownik' element={<UserPanel />} >
+          </Route>
         </Route>
       </Route>
     </Routes>

@@ -12,7 +12,7 @@ export const loginAPI = async (
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
     setError: (error: string | null) => void,
     navigate: (path: string) => void,
-    setUser: (user: any) => void
+    setUser: (user: any) => void,
 ) => {
     try {
         setError(null);
@@ -35,23 +35,22 @@ export const loginAPI = async (
 
                 if (data.access_token) {
                     localStorage.setItem('accessToken', data.access_token);
-
                     try {
                         const userResponse = await fetch(`${api.apiInterceptor}/users/me`, {
                             headers: {
                                 'Authorization': `Bearer ${data.access_token}`
                             }
                         });
-
                         if (userResponse.ok) {
                             const userData = await userResponse.json();
                             setUser(userData);
+                        } else {
+                            console.error('Server responded with error:', userResponse.status);
                         }
                     } catch (userError) {
                         console.error('Error getting user data:', userError);
                     }
                     navigate('/Uzytkownik');
-
                 } else {
                     throw new Error('No token in response');
                 }
