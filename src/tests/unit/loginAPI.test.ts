@@ -4,6 +4,12 @@ import { api } from '../../config/api';
 
 globalThis.fetch = vi.fn();
 
+vi.mock('../../config/api', () => ({
+    api: {
+        apiInterceptor: 'http://mock-api.test'
+    }
+}));
+
 const localStorageMock = (() => {
     let store: Record<string, string> = {};
     return {
@@ -34,6 +40,7 @@ describe('loginAPI', () => {
     const mockSetError = vi.fn();
     const mockNavigate = vi.fn();
     const mockSetUser = vi.fn();
+    const mockUpdateToken = vi.fn();
 
     const mockSuccessResponse = {
         access_token: 'test-token-123',
@@ -50,6 +57,7 @@ describe('loginAPI', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         localStorageMock.clear();
+        mockUpdateToken.mockReset();
     });
 
     afterEach(() => {
@@ -61,7 +69,6 @@ describe('loginAPI', () => {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });
-
         const mockUserResponse = new Response(JSON.stringify(mockUserData), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
@@ -70,12 +77,14 @@ describe('loginAPI', () => {
         vi.mocked(fetch).mockResolvedValueOnce(mockLoginResponse)
             .mockResolvedValueOnce(mockUserResponse);
 
+
         await loginAPI(
             mockValues,
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
-            mockSetUser
+            mockSetUser,
+            mockUpdateToken
         );
 
         expect(fetch).toHaveBeenCalledTimes(2);
@@ -95,7 +104,7 @@ describe('loginAPI', () => {
             }
         });
 
-        expect(localStorageMock.setItem).toHaveBeenCalledWith('accessToken', mockSuccessResponse.access_token);
+        expect(mockUpdateToken).toHaveBeenCalledWith(mockSuccessResponse.access_token);
         expect(mockSetUser).toHaveBeenCalledWith(mockUserData);
         expect(mockNavigate).toHaveBeenCalledWith('/Uzytkownik');
         expect(mockSetSubmitting).toHaveBeenCalledWith(true);
@@ -117,12 +126,14 @@ describe('loginAPI', () => {
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
-            mockSetUser
+            mockSetUser,
+            mockUpdateToken
         );
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(mockSetError).toHaveBeenCalledWith('Registration error, missing or incorrect registration data');
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(mockUpdateToken).not.toHaveBeenCalled();
         expect(localStorageMock.setItem).not.toHaveBeenCalled();
         expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
     });
@@ -141,12 +152,14 @@ describe('loginAPI', () => {
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
-            mockSetUser
+            mockSetUser,
+            mockUpdateToken
         );
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(mockSetError).toHaveBeenCalledWith('Server error');
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(mockUpdateToken).not.toHaveBeenCalled();
         expect(localStorageMock.setItem).not.toHaveBeenCalled();
         expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
         expect(consoleSpy).toHaveBeenCalled();
@@ -167,12 +180,14 @@ describe('loginAPI', () => {
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
-            mockSetUser
+            mockSetUser,
+            mockUpdateToken
         );
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(mockSetError).toHaveBeenCalledWith('No token in response');
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(mockUpdateToken).not.toHaveBeenCalled();
         expect(localStorageMock.setItem).not.toHaveBeenCalled();
         expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
         expect(consoleSpy).toHaveBeenCalled();
@@ -193,11 +208,12 @@ describe('loginAPI', () => {
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
-            mockSetUser
+            mockSetUser,
+            mockUpdateToken
         );
 
         expect(fetch).toHaveBeenCalledTimes(2);
-        expect(localStorageMock.setItem).toHaveBeenCalledWith('accessToken', mockSuccessResponse.access_token);
+        expect(mockUpdateToken).toHaveBeenCalledWith(mockSuccessResponse.access_token);
         expect(mockNavigate).toHaveBeenCalledWith('/Uzytkownik');
         expect(mockSetUser).not.toHaveBeenCalled();
         expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
@@ -214,12 +230,14 @@ describe('loginAPI', () => {
             { setSubmitting: mockSetSubmitting },
             mockSetError,
             mockNavigate,
-            mockSetUser
+            mockSetUser,
+            mockUpdateToken
         );
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(mockSetError).toHaveBeenCalledWith('Network error');
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(mockUpdateToken).not.toHaveBeenCalled();
         expect(localStorageMock.setItem).not.toHaveBeenCalled();
         expect(mockSetSubmitting).toHaveBeenLastCalledWith(false);
         expect(consoleSpy).toHaveBeenCalled();

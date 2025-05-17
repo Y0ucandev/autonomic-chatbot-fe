@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { register, login, refreshToken, logout, verifyToken } from '../../services/authService';
 import publicAxios from '../../services/publicAxios';
 import apiInterceptor from '../../services/apiInterceptor';
+import { decodeJWT } from '../../utils/tokenUtils';
 
 vi.mock('../../services/publicAxios', () => ({
     default: {
@@ -14,6 +15,10 @@ vi.mock('../../services/apiInterceptor', () => ({
         post: vi.fn(),
         get: vi.fn()
     }
+}));
+
+vi.mock('../../utils/tokenUtils', () => ({
+    decodeJWT: vi.fn()
 }));
 
 describe('Auth service', () => {
@@ -80,21 +85,46 @@ describe('Auth service', () => {
     });
 
     describe('refreshToken', () => {
+        const mockToken = 'test-token-123';
+        const mockDecodedToken = {
+            sub: '12345',
+            email: 'test@example.com',
+            role: 'user',
+            exp: Math.floor(Date.now() / 1000) + 3600
+        };
+
+        beforeEach(() => {
+            vi.mocked(decodeJWT).mockReturnValue(mockDecodedToken);
+        });
+
         it('should call apiInterceptor.post with correct arguments', async () => {
-            const mockResponse = { data: { token: 'new-token-456' } };
-            vi.mocked(apiInterceptor.post).mockResolvedValue(mockResponse);
+            const mockResponse = {
+                access_token: 'new-token-456',
+                token_type: 'Bearer'
+            };
+            vi.mocked(apiInterceptor.post).mockResolvedValue({ data: mockResponse });
+            const result = await refreshToken(mockToken);
 
-            const result = await refreshToken();
-
-            expect(apiInterceptor.post).toHaveBeenCalledWith('/users/refresh-token');
+            expect(apiInterceptor.post).toHaveBeenCalledWith('/users/refresh-token', {
+                sub: mockDecodedToken.sub,
+                email: mockDecodedToken.email,
+                role: mockDecodedToken.role,
+                exp: mockDecodedToken.exp
+            });
             expect(result).toEqual(mockResponse);
         });
 
         it('should throw an error when token refresh fails', async () => {
-            const errorMessage = 'Token refresh failed';
-            vi.mocked(apiInterceptor.post).mockRejectedValue(new Error(errorMessage));
+            vi.mocked(apiInterceptor.post).mockRejectedValue(new Error('API Error'));
 
-            await expect(refreshToken()).rejects.toThrow(errorMessage);
+            await expect(refreshToken(mockToken)).rejects.toThrow('API Error');
+        });
+        it('should throw an error when no token is provided', async () => {
+            await expect(refreshToken('')).rejects.toThrow('No token to refresh');
+        });
+        it('should throw an error when token cannot be decoded', async () => {
+            vi.mocked(decodeJWT).mockReturnValue(null);
+            await expect(refreshToken(mockToken)).rejects.toThrow('Unable to decode token');
         });
     });
 
