@@ -6,6 +6,7 @@ import UserRegistration from './components/loginPage/userRegistration/UserRegist
 import UserLogin from './components/loginPage/userLogin/UserLogin'
 import ProtectedRoute from './services/ProtectedRoute'
 import UserPanel from './components/userPanel/userPanel'
+import GuestRoute from './services/GuestRoute'
 
 const Layout = () => {
   return (
@@ -23,8 +24,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path='Logowanie' element={<UserLogin />} />
-        <Route path='Rejestracja' element={<UserRegistration />} />
+        <Route element={<GuestRoute />}>
+          <Route path="/Logowanie" element={<UserLogin />} />
+          <Route path="/Rejestracja" element={<UserRegistration />} />
+        </Route>
         <Route element={<ProtectedRoute />}>
           <Route path='Uzytkownik' element={<UserPanel />} >
           </Route>

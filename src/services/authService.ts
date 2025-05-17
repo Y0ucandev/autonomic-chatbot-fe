@@ -1,5 +1,6 @@
 import publicAxios from './publicAxios';
 import apiInterceptor from './apiInterceptor';
+import { decodeJWT } from '../utils/tokenUtils';
 
 type LoginCredentials = {
     email: string;
@@ -18,6 +19,10 @@ type AuthResponse = {
     token: string;
     user: RegisterData
 }
+export type RefreshTokenResponse = {
+    access_token: string;
+    token_type: string;
+}
 
 export const register = async (userData: RegisterData) => {
     return publicAxios.post<AuthResponse>('/users/register', userData);
@@ -27,8 +32,23 @@ export const login = async (credentials: LoginCredentials) => {
     return publicAxios.post<AuthResponse>('/users/login', credentials);
 };
 
-export const refreshToken = async () => {
-    return apiInterceptor.post<{ token: string }>('/users/refresh-token');
+export const refreshToken = async (currentToken: string): Promise<RefreshTokenResponse> => {
+    if (!currentToken) {
+        throw new Error('No token to refresh');
+    }
+    const decodedToken = decodeJWT(currentToken);
+
+    if (!decodedToken) {
+        throw new Error('Unable to decode token');
+    }
+
+    const response = await apiInterceptor.post<RefreshTokenResponse>('/users/refresh-token', {
+        sub: decodedToken.sub,
+        email: decodedToken.email,
+        role: decodedToken.role,
+        exp: decodedToken.exp
+    });
+    return response.data;
 };
 
 export const logout = async () => {

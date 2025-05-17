@@ -13,7 +13,10 @@ export const loginAPI = async (
     setError: (error: string | null) => void,
     navigate: (path: string) => void,
     setUser: (user: any) => void,
+    updateToken: (token: string | null) => void
+
 ) => {
+
     try {
         setError(null);
         setSubmitting(true);
@@ -34,7 +37,7 @@ export const loginAPI = async (
                 const data: LoginResponse = await response.json();
 
                 if (data.access_token) {
-                    localStorage.setItem('accessToken', data.access_token);
+                    updateToken(data.access_token);
                     try {
                         const userResponse = await fetch(`${api.apiInterceptor}/users/me`, {
                             headers: {

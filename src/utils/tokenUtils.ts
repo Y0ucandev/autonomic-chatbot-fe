@@ -17,7 +17,6 @@ export const tokenExpiryTime = (token: string): number => {
     const expiryTime = payload.exp * 1000;
     const currentTime = Date.now();
     const timeToExpiry = expiryTime - currentTime;
-
     return timeToExpiry > 0 ? timeToExpiry : -1;
 };
 

@@ -15,20 +15,25 @@ export type User = {
 
 type AuthContextType = {
     user: User | null;
+    token: string | null;
     setUser: (user: User | null) => void;
     loading: boolean;
     logout: () => void;
     authenticated: boolean;
     refreshUserToken: () => Promise<boolean>;
+    updateToken: (newToken: string | null) => void;
 }
 
 const defaultAuthContext: AuthContextType = {
     user: null,
+    token: null,
     setUser: () => { },
     loading: true,
     logout: () => { },
     authenticated: false,
     refreshUserToken: () => Promise.resolve(false),
+    updateToken: () => { },
+
 };
 
 const AuthContext = createContext<AuthContextType>(defaultAuthContext);
@@ -69,9 +74,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const refreshUserToken = useCallback(async (): Promise<boolean> => {
         try {
-            const response = await refreshToken();
-            if (response.data && response.data.token) {
-                updateToken(response.data.token);
+            if (!token) return false;
+            const refreshResponse = await refreshToken(token);
+            if (refreshResponse && refreshResponse.access_token) {
+                updateToken(refreshResponse.access_token);
                 return true;
             }
             logout();
@@ -81,7 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             logout();
             return false;
         }
-    }, [updateToken, logout]);
+    }, [token, updateToken, logout]);
 
     useEffect(() => {
         const initializeAuth = async () => {
@@ -89,7 +95,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             if (storedToken) {
                 if (tokenExpired(storedToken)) {
-                    logout();
+                    try {
+                        const response = await refreshToken(storedToken);
+                        updateToken(response.access_token);
+                    } catch (error) {
+                        console.error('Unable to refresh token:', error);
+                        logout();
+                    }
                 } else {
                     setToken(storedToken);
                     setupInterceptors(storedToken);
@@ -115,6 +127,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         authenticated: !!token,
         // authenticated: !!user && !!token,
         refreshUserToken,
+        updateToken
     };
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

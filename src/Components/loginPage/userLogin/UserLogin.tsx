@@ -19,7 +19,7 @@ export type FormValues = {
 const UserLogin = () => {
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
-    const { setUser } = useAuth();
+    const { setUser, updateToken } = useAuth();
     const { passwordReveal, togglePasswordReveal } = useSecretPassword();
 
     const validationSchema: ValidationSchema<FormValues> = {
@@ -38,7 +38,7 @@ const UserLogin = () => {
                 // initialValues={{ email: '', password: '' }}
                 validate={validate}
                 onSubmit={(values, formikBag) => {
-                    return loginAPI(values, formikBag, setError, navigate, setUser,);
+                    return loginAPI(values, formikBag, setError, navigate, setUser, updateToken);
                 }}
             >
                 {({
